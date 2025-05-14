@@ -106,6 +106,33 @@ def exportreport(id):
     with open(f'files/{id}/export.json', 'r') as f:
         testcases = json.load(f)
 
+    # Preload images for each testcase with isolated context
+    for testcase in testcases:
+        # Create subdoc-specific InlineImage instances
+        red_images = []
+        for rf in testcase.get("redfiles", []):
+            parts = rf.split("|")
+            filepath = parts[0].strip()
+            caption = parts[1].strip() if len(parts) > 1 else ""
+            if os.path.isfile(filepath):
+                red_images.append({
+                    "image": InlineImage(doc, filepath, width=Mm(80)),  # This MUST work if images differ per testcase
+                    "caption": caption
+                })
+        testcase["red_images"] = red_images
+
+        blue_images = []
+        for bf in testcase.get("bluefiles", []):
+            parts = bf.split("|")
+            filepath = parts[0].strip()
+            caption = parts[1].strip() if len(parts) > 1 else ""
+            if os.path.isfile(filepath):
+                blue_images.append({
+                    "image": InlineImage(doc, filepath, width=Mm(80)),
+                    "caption": caption
+                })
+        testcase["blue_images"] = blue_images
+    
     doc = DocxTemplate(f"custom/reports/{secure_filename(request.form['report'])}")
     doc.render({
         "assessment": assessment,
