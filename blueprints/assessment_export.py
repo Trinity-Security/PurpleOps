@@ -107,6 +107,8 @@ def exportreport(id):
     with open(f'files/{id}/export.json', 'r') as f:
         testcases = json.load(f)
 
+    doc = DocxTemplate(f"custom/reports/{secure_filename(request.form['report'])}")
+    
     # Preload images for each testcase with isolated context
     for testcase in testcases:
         # Create subdoc-specific InlineImage instances
@@ -134,7 +136,6 @@ def exportreport(id):
                 })
         testcase["blue_images"] = blue_images
     
-    doc = DocxTemplate(f"custom/reports/{secure_filename(request.form['report'])}")
     doc.render({
         "assessment": assessment,
         "testcases": testcases
