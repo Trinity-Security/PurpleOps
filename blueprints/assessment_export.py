@@ -3,7 +3,8 @@ import csv
 import json
 import shutil
 from model import *
-from docxtpl import DocxTemplate
+from docxtpl import DocxTemplate, InlineImage
+from docx.shared import Mm
 from utils import user_assigned_assessment
 from werkzeug.utils import secure_filename
 from flask_security import auth_required, current_user
