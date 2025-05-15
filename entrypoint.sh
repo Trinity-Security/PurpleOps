@@ -2,7 +2,7 @@
 
 echo "Waiting for Mongo..."
 
-while ! nc -z "$MONGO_HOST" 27017; do
+while ! nc -z "$MONGO_HOST" 27717; do
     sleep 0.1
 done
 
