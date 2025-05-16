@@ -119,7 +119,7 @@ def exportreport(id):
             caption = parts[1].strip() if len(parts) > 1 else ""
             if os.path.isfile(filepath):
                 red_images.append({
-                    "image": InlineImage(doc, filepath, width=Mm(80)),  # This MUST work if images differ per testcase
+                    "image": InlineImage(doc, filepath, width=Mm(180)),  # This MUST work if images differ per testcase
                     "caption": caption
                 })
         testcase["red_images"] = red_images
@@ -131,7 +131,7 @@ def exportreport(id):
             caption = parts[1].strip() if len(parts) > 1 else ""
             if os.path.isfile(filepath):
                 blue_images.append({
-                    "image": InlineImage(doc, filepath, width=Mm(80)),
+                    "image": InlineImage(doc, filepath, width=Mm(180)),
                     "caption": caption
                 })
         testcase["blue_images"] = blue_images
