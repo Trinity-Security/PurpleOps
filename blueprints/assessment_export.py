@@ -2,6 +2,7 @@ import os
 import csv
 import json
 import shutil
+import html
 from model import *
 from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm
@@ -135,6 +136,20 @@ def exportreport(id):
                     "caption": caption
                 })
         testcase["blue_images"] = blue_images
+
+    def xml_safe(value):
+        if isinstance(value, str):
+            return html.escape(value)
+        elif isinstance(value, list):
+            return [xml_safe(v) for v in value]
+        elif isinstance(value, dict):
+            return {k: xml_safe(v) for k, v in value.items()}
+        return value
+
+    for testcase in testcases:
+        for key in list(testcase.keys()):
+            if key not in ["red_images", "blue_images"]:
+                testcase[key] = xml_safe(testcase[key])
     
     doc.render({
         "assessment": assessment,
