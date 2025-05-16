@@ -3,6 +3,7 @@ import csv
 import json
 import shutil
 import html
+from docxtpl import RichText
 from model import *
 from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm
@@ -109,7 +110,18 @@ def exportreport(id):
         testcases = json.load(f)
 
     doc = DocxTemplate(f"custom/reports/{secure_filename(request.form['report'])}")
-    
+
+    # adding MITRE references
+    for testcase in testcases:
+        mitreid = testcase.get("mitreid", "")
+        if mitreid:
+            url = f"https://attack.mitre.org/techniques/{mitreid.replace('.', '/')}"
+            rt = RichText()
+            rt.add(url, url_id=doc.build_url_id(url))  # Show full URL text
+            testcase["mitre_link"] = rt
+        else:
+            testcase["mitre_link"] = "N/A"
+
     # Preload images for each testcase with isolated context
     for testcase in testcases:
         # Create subdoc-specific InlineImage instances
