@@ -30,7 +30,7 @@ if not os.path.exists(f"{PWD}/external/"):
 
 def pullMitreAttack (component):
     # Pull the HTML page to find and download the link to the latest framework version
-    req = requests.get(f"https://github.com/CyberCX-STA/PurpleOps-Deps/raw/master/attack.mitre/15.1/enterprise-attack-v15.1-{component}.xlsx")
+    req = requests.get(f"https://github.com/Trinity-Security/PurpleOps-Deps/raw/refs/heads/main/attack.mitre/17.1/enterprise-attack-v17.1-{component}.xlsx")
     if req.status_code == 200:
         #req = r.text.split('"')
         #url = [x for x in req if "xlsx" in x and "enterprise" in x and "docs" in x and component in x][0]
