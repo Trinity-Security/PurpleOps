@@ -162,10 +162,21 @@ def exportreport(id):
         for key in list(testcase.keys()):
             if key not in ["red_images", "blue_images"]:
                 testcase[key] = xml_safe(testcase[key])
+                
+    missed_count = sum(1 for tc in testcases if tc.get("outcome") == "Missed")
+    logged_count = sum(1 for tc in testcases if tc.get("outcome") == "Logged")
+    prevented_count = sum(1 for tc in testcases if tc.get("outcome") == "Prevented")
+    alerted_count = sum(1 for tc in testcases if tc.get("alerted") is True)
+    total_count = len(testcases)
     
     doc.render({
         "assessment": assessment,
-        "testcases": testcases
+        "testcases": testcases,
+        "missed_count": missed_count,
+        "logged_count": logged_count,
+        "prevented_count": prevented_count,
+        "alerted_count": alerted_count,
+        "total_count": total_count
     })
     doc.save(f'files/{id}/report.docx')
 
